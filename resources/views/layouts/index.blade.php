@@ -7,7 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>@yield('title') - Portobase Admin</title>
+  <title>@yield('title') - {{ env('APP_NAME') }}</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -50,10 +50,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <div class="brand-link">
       <img src="{{ asset('adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTE" class="brand-image img-circle elevation-3">
       <span class="brand-text">Portobase Admin</span>
-    </a>
+    </div>
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -116,7 +116,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">@yield('page')</h1>
+            <h1 class="m-0">@yield('title')</h1>
           </div>
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
