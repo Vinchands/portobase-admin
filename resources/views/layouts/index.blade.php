@@ -175,12 +175,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
   function showLogoutConfirmation() {
     const logoutForm = document.getElementById('logout-form')
     Swal.fire({
-      title: "Want to logout?",
-      icon: "warning",
+      // title: "Confirmation",
+      text: "Are you sure want to logout?",
+      icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
+      confirmButtonText: "Yes",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes"
+      cancelButtonText: "No"
     }).then((result) => {
       if (result.isConfirmed) {
         logoutForm.submit()

@@ -12,17 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('projects', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('category_id');
+            $table->uuid('category_id');
             $table->string('title');
-            $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->enum('status', ['draft', 'public'])->default('draft');
             $table->string('repo_url')->nullable();
             $table->string('project_url')->nullable();
             $table->timestamps();
-
+            
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
