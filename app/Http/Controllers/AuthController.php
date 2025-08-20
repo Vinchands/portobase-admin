@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -14,7 +15,7 @@ class AuthController extends Controller
       return view('guest.login');
     }
     
-    public function authenticate(Request $request): RedirectResponse
+    public function login(Request $request): RedirectResponse
     {
       $credentials = $request->validate([
           'email' => 'required|email',
@@ -26,7 +27,7 @@ class AuthController extends Controller
       if (Auth::attempt($credentials, $remember)) {
           $request->session()->regenerate();
           
-          return redirect()->route('dashboard');
+          return redirect()->route('dashboard')->with('welcome', 'Welcome back!');
       }
       
       return back()->withErrors([
@@ -54,12 +55,12 @@ class AuthController extends Controller
             'name' => $credentials['name'],
             'username' => $credentials['username'],
             'email' => $credentials['email'],
-            'password' => bcrypt($credentials['password']),
+            'password' => Hash::make($credentials['password']),
         ]);
         
         Auth::login($user);
         
-        return redirect()->route('dashboard')->with('success', 'Registration successful. Welcome!');
+        return redirect()->route('dashboard')->with('welcome', 'Registration successful. Welcome!');
     }
     
     public function logout(Request $request): RedirectResponse

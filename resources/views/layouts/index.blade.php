@@ -13,6 +13,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
 </head>
@@ -34,9 +35,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
-        <a class="nav-link text-danger" href="#" role="button" title="Sign Out">
+        <button type="submit" class="btn btn-sm nav-link text-danger" title="Sign Out" onclick="showLogoutConfirmation()">
           <i class="fas fa-power-off"></i>
-        </a>
+        </button>
+        <form action="{{ route('logout') }}" method="post" id="logout-form">
+          @csrf
+        </form>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
@@ -63,7 +67,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <img src="{{ asset('adminlte/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image" style="aspect-ratio: 1/1;">
         </div>
         <div class="info">
-          <a href="#" class="d-block">John Doe</a>
+          <a href="#" class="d-block">{{ auth()->user()->name }}</a>
         </div>
       </div>
 
@@ -73,7 +77,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
@@ -138,7 +142,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       "Talk is cheap. Show me your code." - Linus Torvalds
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2025 Kevin CS.</strong> All rights reserved.
+    <strong>&copy; 2025 Kevin CS.</strong> All rights reserved.
   </footer>
 </div>
 <!-- ./wrapper -->
@@ -149,6 +153,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->
 <script src="{{ asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- SweetAlert 2 -->
+<script src="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
 <script type="text/javascript">
@@ -166,6 +172,23 @@ scratch. This page gets rid of all links and provides the needed markup only.
   setInterval(updateClock, 1000)
   updateClock()
   
+  function showLogoutConfirmation() {
+    const logoutForm = document.getElementById('logout-form')
+    Swal.fire({
+      title: "Want to logout?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logoutForm.submit()
+      }
+    });
+  }
+  
 </script>
+@yield('scripts')
 </body>
 </html>

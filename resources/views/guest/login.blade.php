@@ -24,7 +24,7 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to continue</p>
 
-      <form action="{{ route('authenticate') }}" method="post">
+      <form action="{{ route('loginStore') }}" method="post">
         @csrf
         <div class="input-group mb-3">
           <input type="email" name="email" class="form-control" placeholder="Email" value="{{ old('email') }}" autofocus required>

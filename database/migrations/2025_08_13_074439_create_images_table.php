@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('images', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->uuid('project_id');
+            $table->id();
+            $table->unsignedBigInteger('project_id');
             $table->string('url');
             $table->string('alt')->nullable();
             $table->string('slug')->nullable();
