@@ -1,13 +1,5 @@
 @extends('layouts.index')
 
-@php
-
-use Illuminate\Support\Facades\DB;
-
-$projectsCount = DB::table('projects')->count();
-
-@endphp
-
 @section('title', 'Dashboard')
 
 @section('content')
@@ -21,25 +13,24 @@ $projectsCount = DB::table('projects')->count();
   </div>
 @endsession
 <div class="row">
-  <div class="col-lg-3 col-6">
-    <div class="small-box bg-info">
-      <div class="inner">
-        <h3>{{ $projectsCount }}</h3>
-        <p>Projects</p>
+  @foreach ($stats as $stat)
+    <div class="col-12 col-sm-6 col-md-3">
+      <div class="small-box {{ $stat['colorClass'] }}">
+        <div class="inner">
+          <h3>{{ $stat['count'] }}</h3>
+          <p>{{ $stat['name'] }}</p>
+        </div>
+        <div class="icon">
+          <i class="{{ $stat['iconClass'] }}"></i>
+        </div>
+        <!--
+        <a href="#" class="small-box-footer">
+          More info <i class="fas fa-arrow-circle-right"></i>
+        </a>
+        -->
       </div>
-      <div class="icon">
-        <i class="fas fa-folder-open"></i>
-      </div>
-      <a href="#" class="small-box-footer">
-        More info <i class="fas fa-arrow-circle-right"></i>
-      </a>
     </div>
-  </div>
+  @endforeach
 </div>
 
-@endsection
-
-@section('scripts')
-<script type="text/javascript">
-</script>
 @endsection

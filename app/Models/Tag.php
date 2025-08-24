@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Concerns\HasUuid;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -11,19 +11,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\User as Author;
 use App\Models\Project;
 
-class Tech extends Model
+class Tag extends Model
 {
-    use HasUuid;
+    use HasUuids;
     
     protected $fillable = [
       'user_id',
       'name',
     ];
-    
-    public function projects(): HasMany
-    {
-        return $this->hasMany(Project::class);
-    }
     
     public function author(): BelongsTo
     {
