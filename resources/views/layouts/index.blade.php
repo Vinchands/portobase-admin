@@ -16,6 +16,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
+  @yield('head')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
 <div class="wrapper">
@@ -73,39 +74,54 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
+        @php
+            $links = [
+                [
+                    'name' => 'Dashboard',
+                    'alias' => 'dashboard',
+                    'href' => route('dashboard'),
+                    'icon' => 'fas fa-tachometer-alt',
+                ],
+                [
+                    'name' => 'Projects',
+                    'alias' => 'projects',
+                    'href' => '#',
+                    'icon' => 'fas fa-folder-open',
+                ],
+                [
+                    'name' => 'Categories',
+                    'alias' => 'categories',
+                    'href' => route('categories.index'),
+                    'icon' => 'fas fa-list',
+                ],
+                [
+                    'name' => 'Tags',
+                    'alias' => 'tags',
+                    'href' => '#',
+                    'icon' => 'fas fa-code',
+                ],
+                [
+                    'name' => 'API',
+                    'alias' => 'api',
+                    'href' => '#',
+                    'icon' => 'fas fa-plug',
+                ],
+            ];
+        @endphp
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>Dashboard</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-folder-open"></i>
-              <p>Projects</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-list"></i>
-              <p>Categories</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-code"></i>
-              <p>Tags</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-plug"></i>
-              <p>API</p>
-            </a>
-          </li>
+          @foreach ($links as $link)
+            <li class="nav-item">
+              <a
+                href="{{ $link['href'] }}"
+                @class(['nav-link', 'active' => request()->is($link['alias'])])
+              >
+                <i class="nav-icon {{ $link['icon'] }}"></i>
+                <p>{{ $link['name'] }}</p>
+              </a>
+            </li>
+          @endforeach
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -164,7 +180,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   function updateClock() {
     const datetime = new Intl.DateTimeFormat('en-US', {
       dateStyle: 'medium',
-      timeStyle: 'medium'
+      timeStyle: 'short'
     }).format(Date.now())
     clock.innerHTML = datetime
   }
