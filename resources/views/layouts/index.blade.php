@@ -85,7 +85,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 [
                     'name' => 'Projects',
                     'alias' => 'projects',
-                    'href' => '#',
+                    'href' => route('projects.index'),
                     'icon' => 'fas fa-folder-open',
                 ],
                 [
@@ -97,7 +97,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 [
                     'name' => 'Tags',
                     'alias' => 'tags',
-                    'href' => '#',
+                    'href' => route('tags.index'),
                     'icon' => 'fas fa-code',
                 ],
                 [

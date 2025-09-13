@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Category;
 use App\Models\Tag;
@@ -12,30 +13,28 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $id = auth()->user()->id;
-        
         $stats = [
             [
                 'name' => 'Projects',
-                'count' => Project::where('user_id', $id)->count(),
+                'count' => Auth::user()->projects()->count(),
                 'colorClass' => 'bg-info',
                 'iconClass' => 'fas fa-folder-open',
             ],
             [
                 'name' => 'Published',
-                'count' => Project::where('user_id', $id)->where('status', 'public')->count(),
+                'count' => Auth::user()->projects()->where('status', 'public')->count(),
                 'colorClass' => 'bg-success',
-                'iconClass' => 'fas fa-eye'
+                'iconClass' => 'fas fa-globe'
             ],
             [
-                'name' => 'Drafts',
-                'count' => Project::where('user_id', $id)->where('status', 'draft')->count(),
+                'name' => 'Tags',
+                'count' => Auth::user()->tags()->count(),
                 'colorClass' => 'bg-warning',
-                'iconClass' => 'fas fa-file'
+                'iconClass' => 'fas fa-code'
             ],
             [
                 'name' => 'Categories',
-                'count' => Category::where('user_id', $id)->count(),
+                'count' => Auth::user()->categories()->count(),
                 'colorClass' => 'bg-danger',
                 'iconClass' => 'fas fa-list'
             ]

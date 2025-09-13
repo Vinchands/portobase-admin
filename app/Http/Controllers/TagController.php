@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+use App\Models\Tag;
 
 class TagController extends Controller
 {
@@ -11,7 +14,8 @@ class TagController extends Controller
      */
     public function index()
     {
-        //
+        $tags = Auth::user()->tags;
+        return view('auth.tags', ['tags' => $tags]);
     }
 
     /**
@@ -27,7 +31,13 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string',
+        ]);
+        
+        Auth::user()->tags()->create($validated);
+        
+        return to_route('tags.index')->with('success', 'New tag added.');
     }
 
     /**
@@ -51,7 +61,15 @@ class TagController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+        
+        $tag = Tag::find($id);
+        $tag->name = $request->name;
+        $tag->save();
+        
+        return to_route('tags.index')->with('success', 'Tag updated.');
     }
 
     /**
@@ -59,6 +77,9 @@ class TagController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $tag = Tag::find($id);
+        $tag->delete();
+        
+        return to_route('tags.index')->with('success', 'Tag updated.');
     }
 }

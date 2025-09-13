@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('title', 'Categories')
+@section('title', 'Tags')
 
 @section('head')
   <!-- DataTables -->
@@ -12,13 +12,13 @@
 @section('content')
   <div class="card">
     <div class="card-header pb-1">
-      <h4><span id="form-state">New</span> Category</h4>
+      <h4>New Tag</h4>
     </div>
     <div class="card-body">
-      <form action="{{ route('categories.store') }}" method="post">
+      <form action="{{ route('tags.store') }}" method="post">
         @csrf
         <div class="input-group mb-3">
-          <input type="text" id="category-name" name="name" class="form-control" placeholder="Name (e.g. Web App)" required>
+          <input type="text" name="name" class="form-control" placeholder="Name (e.g. React, Laravel)" required>
           <div class="input-group-append">
             <button class="btn btn-primary" type="submit">Add</button>
           </div>
@@ -28,7 +28,7 @@
   </div>
   <div class="card">
     <div class="card-body table-responsive">
-      <table id="category-table" class="table table-bordered table-hover">
+      <table id="tag-table" class="table table-bordered table-hover">
         <thead>
           <tr>
             <th>#</th>
@@ -38,20 +38,20 @@
           </tr>
         </thead>
         <tbody>
-          @if ($categories->count() > 0)
-            @foreach ($categories as $category)
+          @if ($tags->count() > 0)
+            @foreach ($tags as $tag)
               <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $category->name }}</td>
-                <td>{{ $category->created_at }}</td>
+                <td>{{ $tag->name }}</td>
+                <td>{{ $tag->created_at }}</td>
                 <td>
-                  <button class="btn btn-sm btn-warning edit-button" data-id="{{ $category->id }}" data-name="{{ $category->name }}">
+                  <button class="btn btn-sm btn-warning" data-id="{{ $tag->id }}">
                     <i class="fas fa-pencil-alt"></i>
                   </button>
-                  <button class="btn btn-sm btn-danger delete-button" data-id="{{ $category->id }}" data-name="{{ $category->name }}" onclick="showDeleteModal('{{ $category->id }}', '{{ $category->name }}')">
+                  <button class="btn btn-sm btn-danger" onclick="showDeleteModal('{{ $tag->id }}', '{{ $tag->name }}')">
                     <i class="fas fa-trash"></i>
                   </button>
-                  <form id="category-{{ $category->id }}" action="{{ route('categories.destroy', ['category' => $category->id]) }}" method="post" class="d-none">
+                  <form id="tag-{{ $tag->id }}" action="{{ route('tags.destroy', ['tag' => $tag->id]) }}" method="post" class="d-none">
                     @csrf
                     @method('DELETE')
                   </form>
@@ -77,10 +77,6 @@
   <script src="{{ asset('adminlte/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
   <script type="text/javascript">
     
-    $('#category-table').DataTable({
-      columns: [{ width: '10%' }, null, null, { width: '10%' }],
-    })
-    
     @session('success')
       Swal.fire({
         title: 'Success',
@@ -89,9 +85,8 @@
       })
     @endsession
     
-    function showDeleteModal() {
-      const id = this.dataset.id
-      const name = this.dataset.name
+    function showDeleteModal(id, name) {
+      const deleteForm = document.getElementById(`tag-${id}`)
       Swal.fire({
         title: 'Warning',
         text: `Are you sure want to delete '${name}'? This action cannot be undone.`,
@@ -103,25 +98,15 @@
         cancelButtonText: 'No'
       }).then((result) => {
         if (result.isConfirmed) {
-          const deleteForm = document.getElementById(`category-${id}`)
           deleteForm.submit()
         }
       })
     }
     
-    document.querySelectorAll('button.delete-button').forEach(button => {
-      button.addEventListener('click', showDeleteModal)
+    $(() => {
+      $('#tag-table').DataTable({
+        columns: [{ width: '10%' }, null, null, { width: '10%' }],
+      })
     })
-    
-    function editItem() {
-      const id = this.dataset.id
-      const name = this.dataset.name
-      const form = document.getElementById('category-form')
-    }
-    
-    document.querySelectorAll('button.edit-button').forEach(button => {
-      button.addEventListener('click', editItem)
-    })
-    
   </script>
 @endsection
